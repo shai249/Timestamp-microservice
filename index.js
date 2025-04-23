@@ -27,7 +27,7 @@ app.get('/api/hello', function (req, res) {
 
 app.get('/api/:date', function (req, res) {
   const time = req.params.date
-  if(/\d5,}/.test(time)) {
+  if(/\d{5,}/.test(time)) {
     dateInt = parseInt(time)
     res.json({ unix: time, utc: new Date(dateInt).toUTCString() });
   }
@@ -39,11 +39,6 @@ app.get('/api/:date', function (req, res) {
   }
   else {
     res.json({ unix: timeObject.valueOf(), utc: timeObject.toUTCString() })
-  }
-
-  if (time == "")
-  {
-    res.json({ unix: new Date().toUTCString })
   }
 })
 
