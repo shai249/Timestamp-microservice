@@ -2,6 +2,7 @@
 // where your node app starts
 
 // init project
+require('dotenv').config()
 var express = require('express');
 var app = express();
 
@@ -14,17 +15,27 @@ app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 20
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (req, res) {
+app.get('/', function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
+app.get('/api/hello', function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
+app.get('/api/:time', function (req, res) {
+  const time = req.params.time
+  if (time.includes("-"))
+  {
+    res.json({ unix: new Date(time).getTime(), utc: new Date(time).toUTCString() })
+  } 
+  else
+  {
+    res.json({ unix: new Date(Number(time)).getTime(), utc: new Date(Number(time)).toUTCString() })
+  }
+})
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
