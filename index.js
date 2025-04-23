@@ -25,15 +25,21 @@ app.get('/api/hello', function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get('/api/:time', function (req, res) {
-  const time = req.params.time
-  if (time.includes("-"))
-  {
-    res.json({ unix: new Date(time).getTime(), utc: new Date(time).toUTCString() })
-  } 
-  else
-  {
-    res.json({ unix: new Date(Number(time)).getTime(), utc: new Date(Number(time)).toUTCString() })
+app.get('/api/:date', function (req, res) {
+  const time = req.params.date
+  if(/\d5,}/.test(time)) {
+    dateInt = parseInt(time)
+
+    res.json({ unix: time, utc: new Date(dateInt).toUTCString() });
+  }
+
+  let timeObject = new Date(time)
+
+  if (timeObject.toString() === "Invalid Date") {
+    res.json({ error: "Invalid Date" })
+  }
+  else {
+    res.json({ unix: timeObject.valueOf(), utc: timeObject.toUTCString() })
   }
 })
 
